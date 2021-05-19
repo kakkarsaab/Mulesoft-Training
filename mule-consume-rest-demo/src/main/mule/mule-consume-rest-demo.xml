@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="fd5d2eef-f2f1-474f-85c7-c844f60aed87" basePath="rest-consume-demo" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="1b409a06-81dc-45fa-901d-cb0310a5b2fd" basePath="/api" >
+		<http:request-connection protocol="HTTPS" host="reqres.in" port="443"/>
+	</http:request-config>
+	<flow name="mule-consume-rest-demoFlow" doc:id="a7bf75f3-c8ad-42b5-9bf6-42e1c0da4a18" >
+		<http:listener doc:name="Listener" doc:id="d0c8bbf5-c224-4030-951e-01be4bbe424d" config-ref="HTTP_Listener_config" path="json-consume-demo" allowedMethods="POST"/>
+		<logger level="INFO" doc:name="Logger" doc:id="db14c93e-cde9-43ed-b623-b2b603490563" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="41abb8ce-c14d-4601-bc04-6c763b392ce7" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	name: payload.emp.empName,
+	job: payload.emp.empTitle
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request" doc:id="71f2fb87-b02e-489d-834b-d881d3a0e13c" config-ref="HTTP_Request_configuration" path="/users"/>
+	</flow>
+	<flow name="mule-consume-rest-demoFlow1" doc:id="1f5fab4a-bf43-4d0a-ad47-3a8bef1de946" >
+		<http:listener doc:name="Listener" doc:id="1063aede-e079-4c9a-901d-204fec07d9fa" config-ref="HTTP_Listener_config" path="consume-uriparams-service"/>
+		<logger level="INFO" doc:name="Logger" doc:id="5d0255e9-6b8e-4c19-b2af-8174c244283d" message="#[attributes.queryParams.empID]"/>
+		<http:request method="GET" doc:name="Request" doc:id="da9f2575-3959-4c21-a59e-8a4db62715c4" config-ref="HTTP_Request_configuration" path="/users/{empID}">
+			<http:uri-params ><![CDATA[#[output application/java
+---
+{
+	empID: attributes.queryParams.empID
+	
+}]]]></http:uri-params>
+		</http:request>
+	</flow>
+	<flow name="mule-consume-rest-demoFlow2" doc:id="a727f5f5-b5ee-4eb6-ae50-26f2e0b55638" >
+		<http:listener doc:name="Listener" doc:id="d0481ecc-125a-43aa-a60b-e71ad507d9e2" config-ref="HTTP_Listener_config" path="query-params-consume-service" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="Logger" doc:id="35aa6e28-d7d1-46f8-8200-876c2615a3cf" message="#[attributes.queryParams.empID]"/>
+		<http:request method="GET" doc:name="Request" doc:id="73584af7-4676-465b-8946-5e1ab703e4e9" config-ref="HTTP_Request_configuration" path="/users/{empID}">
+			<http:uri-params ><![CDATA[#[{
+	empID: attributes.queryParams.empID
+}]]]></http:uri-params>
+		</http:request>
+	</flow>
+	<flow name="mule-consume-rest-demoFlow3" doc:id="7cc8431a-e883-4a3f-af01-723fd707907d" >
+		<http:listener doc:name="Listener" doc:id="280e42e5-11ac-4b32-b2d4-fa973562c8e7" config-ref="HTTP_Listener_config" path="xml-consume-demo" allowedMethods="POST"/>
+		<logger level="INFO" doc:name="Logger" doc:id="d3ccac36-84fb-4cbe-821b-430e03fc8bd2" message="#[payload]"/>
+		<ee:transform doc:name="Transform Message" doc:id="3ca26552-9fac-4c03-855b-44a86525a3ad" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/xml
+---
+{
+	emp: {
+		empName: payload.name,
+		empTitle: payload.job
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+		<http:request method="POST" doc:name="Request" doc:id="9f6775a4-1466-4161-9ca8-882f00b91650" config-ref="HTTP_Request_configuration" path="/users"/>
+	</flow>
+</mule>

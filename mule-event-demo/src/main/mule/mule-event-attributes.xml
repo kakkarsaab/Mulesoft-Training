@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="mule-event-attributesFlow" doc:id="32cc35d6-bd85-4657-91cf-9cd82c3e0dac" >
+		<http:listener doc:name="Listener" doc:id="d4198f3c-2239-4c63-a3a1-9a0d3be8b286" config-ref="HTTP_Listener_config" path="query-param-demo" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="Logger" doc:id="68bf8386-c47b-4c42-8e34-c288ec5db16f" message="#[attributes]"/>
+	</flow>
+	<flow name="mule-event-attributesFlow1" doc:id="602f0dd0-91dc-4d64-8cea-426e15ca8c81" >
+		<http:listener doc:name="Listener" doc:id="c01636ff-8ea5-41c4-8e59-3c820f7bcb81" config-ref="HTTP_Listener_config" path="uri-param-demo/{empID}/{empName}" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="Logger" doc:id="e6d28145-3538-48cf-b26c-29aead5b425c" message="#[attributes.headers.TransactionID]"/>
+	</flow>
+</mule>

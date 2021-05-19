@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="6e4e18cf-0cd4-420a-9e7b-4c12323756a1" basePath="event-demo" >
+		<http:listener-connection host="0.0.0.0" port="8081" />
+	</http:listener-config>
+	<flow name="mule-event-demoFlow" doc:id="4840b554-6d0d-47d0-b2dd-1910b70ee6a9" >
+		<http:listener doc:name="Listener" doc:id="5b7650e9-5b98-43cd-9cf3-8f522fd91029" config-ref="HTTP_Listener_config" path="json-demo" allowedMethods="POST"/>
+		<logger level="INFO" doc:name="Logger" doc:id="f5f9e8f5-8781-4ef1-94cb-81e3095eb854" message="#[payload.empID]"/>
+	</flow>
+	<flow name="mule-event-demoFlow1" doc:id="478f7392-8865-4e65-b063-ee1a440e296d" >
+		<http:listener doc:name="Listener" doc:id="8e239554-3a55-4227-816a-3fc6a0a8554f" config-ref="HTTP_Listener_config" path="xml-demo" allowedMethods="POST"/>
+		<logger level="INFO" doc:name="Logger" doc:id="c227c833-8048-4936-bba5-10b7a4bef156" message="#[payload.emp.empID]"/>
+	</flow>
+</mule>

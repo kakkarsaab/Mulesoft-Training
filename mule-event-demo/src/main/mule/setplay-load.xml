@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<flow name="reqres-apiFlow" doc:id="5b1b0eac-f58f-4749-a611-fe533bc0174e" >
+		<http:listener doc:name="Listener" doc:id="9c6b0c01-dc45-4a0f-b6f4-11b48c5ed1c8" config-ref="HTTP_Listener_config" path="setplay-load" allowedMethods="POST"/>
+		<logger level="INFO" doc:name="Logger" doc:id="7fbcfbae-3c84-49b7-9ee9-bc7d569c28d1" message="#[payload.empID]"/>
+		<set-payload value="success" doc:name="Set Payload" doc:id="df1f4e72-9e59-4533-961e-bf488beafdb0" />
+	</flow>
+</mule>

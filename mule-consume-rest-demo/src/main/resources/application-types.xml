@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="EmployeeRequestpayload" format="xml">
+      <types:example format="xml" element="emp" location="examples/employee-reqrees-api-example.xml"/>
+    </types:type>
+    <types:type name="ReqResCreateRequest" format="json">
+      <types:shape format="weave" example="examples/reqres-create-json.json"><![CDATA[%dw 2.0
+
+type ReqResCreateRequest = {|
+  name: String, 
+  job: String
+|} {"example": "{\\\"name\\\":\\\"morpheus\\\",\\\"job\\\":\\\"leader\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="EmployeeJsonInput" format="json">
+      <types:shape format="weave" example="examples/reqres-create-json-1.json"><![CDATA[%dw 2.0
+
+type EmployeeJsonInput = {|
+  name: String, 
+  job: String
+|} {"example": "{\\\"name\\\":\\\"morpheus\\\",\\\"job\\\":\\\"leader\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="EmployeeXmlOutput" format="xml">
+      <types:example format="xml" element="emp" location="examples/employee-reqrees-api-example-1.xml"/>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#41abb8ce-c14d-4601-bc04-6c763b392ce7">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="EmployeeRequestpayload"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="ReqResCreateRequest"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#3ca26552-9fac-4c03-855b-44a86525a3ad">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="EmployeeJsonInput"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="EmployeeXmlOutput"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>
