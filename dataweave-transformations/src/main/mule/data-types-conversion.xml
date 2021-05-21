@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="data-types-conversionFlow" doc:id="269b61fb-83dd-4291-b1b5-06f98b1ec778" >
+		<ee:transform doc:name="Type coersion" doc:id="a96c7df0-3bd4-476e-910c-c0896e785e97" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+var empName= "Siddhant"
+var emp={
+	"empID":"10234",
+	"empName":"Siddhant",
+	"empStatus":null
+}
+
+---
+{
+	employeeID:emp.empID as Number,
+	empoyeeName:emp.empName default -- as String,
+	employeeStataus:emp.empStatus  default false as Boolean
+	
+}
+//Default check whether the field is null. If not it will take as you will them to 
+//do.]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

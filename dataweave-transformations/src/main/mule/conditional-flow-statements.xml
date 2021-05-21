@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="conditional-flow-statementsFlow" doc:id="2382163a-74c7-4fed-8766-35b1aeace69e" >
+		<ee:transform doc:name="Transform Message" doc:id="544216b6-3ea7-4308-90ec-d87d1040042a" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+//output application/json
+//var country="India"
+//var city= "Hyderabad"
+//---
+//{
+	//currency: if(country=="USA") "USD" else if(country=="India") "INR" else "None",
+	//city: if(city==null) "" else "Hyderabad"
+//}
+
+%dw 2.0
+output application/json
+
+ 
+
+var country = "UK"
+var city = ""
+---
+{
+    exhange: if(country=="India") { currency: "INR" ,
+        city: "Bangalore"
+    }
+    else if(country=="USA") {currency: "USD", city: "Texas"}
+    else if(country=="UK") {currency: "Ponds", city: "London"}
+    else ""
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

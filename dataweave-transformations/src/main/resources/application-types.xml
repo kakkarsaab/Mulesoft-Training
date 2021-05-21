@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<types:mule xmlns:types="http://www.mulesoft.org/schema/mule/types">
+  <types:catalog>
+    <types:type name="employeeJSON" format="json">
+      <types:shape format="weave" example="examples/employeeJSON.json"><![CDATA[%dw 2.0
+
+type employeeJSON = {|
+  name: String, 
+  job: String
+|} {"example": "{\\\"name\\\":\\\"morpheus\\\",\\\"job\\\":\\\"leader\\\"}"}
+
+]]></types:shape>
+    </types:type>
+    <types:type name="employeeXML" format="xml">
+      <types:example format="xml" element="emp" location="examples/employeeXML.xml"/>
+    </types:type>
+  </types:catalog>
+  <types:enrichment select="#2c995609-16bb-4303-862b-eadbdd920341">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="employeeJSON"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="employeeXML"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#617dbb68-5f45-4011-a263-e8821cde0ee0">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="employeeJSON"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="employeeXML"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+  <types:enrichment select="#b6483249-214c-4bc8-a43c-3514ff5afbe5">
+    <types:processor-declaration>
+      <types:input-event>
+        <types:message>
+          <types:payload type="employeeXML"/>
+        </types:message>
+      </types:input-event>
+      <types:output-event>
+        <types:message>
+          <types:payload type="employeeJSON"/>
+        </types:message>
+      </types:output-event>
+    </types:processor-declaration>
+  </types:enrichment>
+</types:mule>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<flow name="dw-map-filterFlow" doc:id="b46c5b0a-7ef9-4061-b8bf-2777c673ef3f" >
+		<ee:transform doc:name="Transform Message" doc:id="2894dd13-812f-4937-81f3-00324ab7a56c" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/java
+var empList=[
+	{
+		"empID":"101",
+		"empName":"Siddhant",
+		"empStatus":"A"
+	},
+	{
+		"empID":"102",
+		"empName":"Adarsh",
+		"empStatus":"X"
+	},
+	{
+		"empID":"103",
+		"empName":"Shivam",
+		"empStatus":"B"
+	}]
+
+---
+{
+	"mapExample": empList map(emp,indexOfEmp)->{
+		
+		"employeeID":emp.empID,
+		"employeeName":emp.empName,
+		"employeeStatus":emp.empStatus
+	},
+	"mapObjectExample": empList[0] mapObject(empValue,empKey,indexOfEmp)->{
+		(empKey):empValue
+	},
+	
+	"mapWithFilter": empList filter($.empStatus=="B") map(emp, indexOfEmp)->{
+		"employeeID":emp.empID
+	},
+	
+	"mapObjectWithFilterObject": empList[0] filterObject(($) == "101") mapObject(empValue, empKey, indexOfEmp) ->{
+		(empKey):empValue
+	}
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>
